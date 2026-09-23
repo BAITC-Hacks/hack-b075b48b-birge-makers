@@ -1,0 +1,3 @@
+<client_request>{"city":"Астана","date":"2026-11-14","event_format":"корпоратив","category":"Ведущий","budget":1000000,"duration_hours":4,"language":"русский"}</client_request>
+<rejection_stats>{"total_in_city":4,"wrong_category_count":1,"busy_on_date_count":1,"over_budget_count":1,"wrong_format_count":0}</rejection_stats>
+<available_contractors>[{"id":"example-1","anon_name":"Пример для контракта","categories":["Ведущий"],"city":"Астана","price_from_kzt":700000,"event_formats":["корпоратив"],"languages":["русский","казахский"],"max_hours":6,"description":"В комплекте 2 радиомикрофона."}]</available_contractors>
