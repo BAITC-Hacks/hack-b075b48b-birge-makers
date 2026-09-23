@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "models": {
+    "llm": "gpt-4.1-mini",
+    "embedding": "text-embedding-3-small"
+  },
+  "real_embedding_and_llm_calls": true,
+  "contractor_id": "HK-39372",
+  "explanation": "Цена от 200 000 ₸ — равна бюджету 200 000 ₸; формат «свадьба» указан в каталоге; языки — русский. В описании: «Также выполняли оформление для Hotel Akatsuki, Fuyuki Grand и Atelier Sakura».",
+  "ai_index_applied": true
+}

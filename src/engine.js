@@ -24,7 +24,13 @@ export function safeQuote(description, quote) {
     && /\d|оборудован|сценари|интерактив|DJ|дидже|скрипк|саксофон|домбр|репертуар|кавер|вокал|вместим|банкетн|террас|парков|экран|проектор|микрофон|телеканал|радиостанц|съёмк|съемк|монтаж|флорист|оформлен|букет|фотозон|свет|звук|костюм|церемон|русск|казахск|английск/iu.test(quote);
 }
 export function snippets(description) {
-  return (description.match(/[^.!?•;]+[.!?]?/gu) || []).map(s => s.trim()).filter(s => safeQuote(description, s));
+  // Do not split decimal numbers (1.5), URLs or abbreviations into invented fragments.
+  return description.split(/(?<!\d)[.!?]+(?=\s|$)|(?<=\d)[.!?]+(?=\s|$)|[•;\r\n]+/u)
+    .map(s => s.trim()).filter(s => safeQuote(description, s))
+    .map(s => {
+      const offset = description.indexOf(s) + s.length;
+      return /[.!?]/u.test(description[offset] ?? '') ? s + description[offset] : s;
+    }).filter(s => safeQuote(description, s));
 }
 function detail(c, r, index) {
   const available = snippets(c.description);
@@ -59,6 +65,7 @@ function card(c, r, index) {
     id: c.id, name: c.anon_name, category: r.category, city: c.city,
     price_from_kzt: c.price_from_kzt, explanation, evidence,
     explanation_source: d.quote ? d.source : 'structured_facts',
+    ai_index_applied: d.source === 'ai_index',
     data_flags: { price_imputed: c.price_imputed ?? null, city_imputed: c.city_imputed ?? null, synthetic: c.synthetic ?? null },
     price_note: c.price_imputed ? 'Стартовая цена проставлена при подготовке датасета; итоговая стоимость заказа не подтверждена.' : 'В каталоге указана стартовая цена; итоговая стоимость заказа не подтверждена.',
   };
