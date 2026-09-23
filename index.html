@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#20334B">
+  <meta name="theme-color" content="#18263C">
   <title>birge — мердігерлерді іріктеу</title>
+  <link rel="preload" href="assets/fonts/NotoSerif-600.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/NotoSans-400.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/NotoSans-600.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=c0cb9268aaf0">
-  <script src="data.js" defer></script>
-  <script src="matcher.js" defer></script>
-  <script src="evidence.js" defer></script>
-  <script src="i18n.js" defer></script>
-  <script src="form-utils.js" defer></script>
-  <script src="result-state.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=47c319596709">
+  <script src="i18n.js?v=ccc94422dc4f" defer></script>
+  <script src="src/api/birge.js?v=f65240e8e506" defer></script>
+  <script src="form-utils.js?v=974b6d22a8c7" defer></script>
+  <script src="result-state.js?v=5a1c5b7e9d85" defer></script>
+  <script src="app.js?v=7573588a9a3e" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -30,40 +29,42 @@
     <section class="intro" aria-labelledby="hero-heading">
       <div class="hero-copy">
         <span class="brass-line" aria-hidden="true"></span>
-        <h1 id="hero-heading" data-i18n="heading">Ерекше сәтке лайық таңдау</h1>
-        <p data-i18n="introText">Күніңізді, бюджетіңізді және тілектеріңізді көрсетіңіз. Сізге сәйкес келетін 3 мердігерге дейін ұсынамыз</p>
+        <h1 id="hero-heading"><span data-i18n="headingLead">Ерекше күніңізге</span> <span class="hero-accent" data-i18n="headingAccent">лайық мердігерлер</span></h1>
+        <p data-i18n="introText">Күніңізді, бюджетіңізді және тілектеріңізді көрсетіңіз — сәйкес келетін 3 нұсқаға дейін ұсынамыз</p>
         <a class="primary-link hero-cta" href="#selection"><span data-i18n="heroAction">Мердігер таңдау</span><svg class="line-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
       </div>
       <figure class="hero-photo">
         <img src="assets/event-atmosphere-960.jpg"
           srcset="assets/event-atmosphere-640.jpg 640w, assets/event-atmosphere-960.jpg 960w, assets/event-atmosphere-1536.jpg 1536w"
-          sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 960px) 600px, (max-width: 1200px) 560px, (max-width: 1570px) 705px, (max-width: 1800px) calc(50vw - 80px), 820px"
+          sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 960px) 480px, (max-width: 1200px) max(420px, calc(50vw - 50px)), (max-width: 1800px) calc(50vw - 72px), 828px"
           width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async"
           data-i18n-alt="heroAlt" alt="Жылы жарығы, гүл композициялары және сәнді үстелдері бар мерекелік зал">
-        <figcaption data-i18n="heroCaption">AI арқылы жасалған атмосфералық көрініс. Нақты мердігердің портфолиосы емес.</figcaption>
+        <figcaption data-i18n="heroCaption">Атмосфералық иллюстрация. Нақты мердігердің портфолиосы емес.</figcaption>
       </figure>
     </section>
     <div class="selection-heading" id="selection"><h2 data-i18n="navSelect">Іріктеу</h2><span class="catalog-count" id="catalog-count" data-i18n="catalog">Мердігерлер каталогы</span></div>
     <div class="workspace">
       <section class="request-panel" aria-labelledby="form-title">
         <div class="section-heading"><span class="step">01</span><h2 id="form-title" data-i18n="formTitle">Іс-шараңыз</h2></div>
+        <div class="catalog-status" id="catalog-status" role="status"><p id="catalog-status-text" data-i18n="catalogLoading">Каталог пен күнтізбе жүктелуде…</p><button type="button" class="retry-button" id="catalog-retry" data-i18n="catalogRetry" hidden>Каталогты қайта жүктеу</button></div>
         <form id="request-form" novalidate>
           <div class="field-row">
             <div class="field"><label for="city"><span data-i18n="city">Қала</span><span class="required-mark" aria-hidden="true"> *</span></label><select id="city" name="city" required aria-describedby="city-error"></select><p class="field-error" id="city-error" hidden></p></div>
-            <div class="field"><label for="date"><span data-i18n="date">Іс-шара күні</span><span class="required-mark" aria-hidden="true"> *</span></label><input id="date" name="date" type="date" min="2026-09-23" max="2026-12-31" required aria-describedby="date-error calendar-help"><p class="field-error" id="date-error" hidden></p></div>
+            <div class="field"><label for="date"><span data-i18n="date">Іс-шара күні</span><span class="required-mark" aria-hidden="true"> *</span></label><input id="date" name="date" type="date" required aria-describedby="date-error calendar-help"><p class="field-error" id="date-error" hidden></p></div>
           </div>
-          <p class="field-help calendar-note" id="calendar-help" data-i18n="calendarHelp">Демо күнтізбе: 23.09.2026–31.12.2026. Басқа күндер үшін қолжетімділік расталмаған.</p>
-          <div class="field"><label for="event"><span data-i18n="event">Іс-шара түрі</span><span class="required-mark" aria-hidden="true"> *</span></label><select id="event" name="event" required aria-describedby="event-error"></select><p class="field-error" id="event-error" hidden></p></div>
+          <p class="field-help calendar-note" id="calendar-help">Күнтізбе аралығы сервистен жүктеледі.</p>
+          <div class="field"><label for="event"><span data-i18n="event">Іс-шара түрі</span><span class="required-mark" aria-hidden="true"> *</span></label><select id="event" name="event_format" required aria-describedby="event-error"></select><p class="field-error" id="event-error" hidden></p></div>
           <div class="field"><label for="category"><span data-i18n="category">Мердігер санаты</span><span class="required-mark" aria-hidden="true"> *</span></label><select id="category" name="category" required aria-describedby="category-error"></select><p class="field-error" id="category-error" hidden></p></div>
           <div class="field"><label for="budget"><span data-i18n="budget">Бюджет, теңгемен</span><span class="required-mark" aria-hidden="true"> *</span></label><div class="money-input"><input id="budget" name="budget" type="text" required inputmode="numeric" placeholder="500 000" aria-describedby="budget-error budget-help" autocomplete="off"><span class="currency-suffix" aria-hidden="true">₸</span></div><p class="field-error" id="budget-error" hidden></p></div>
           <p class="field-help" id="budget-help" data-i18n="priceHelp">Бастапқы баға ескеріледі. Соңғы құнын нақтылау қажет.</p>
           <fieldset class="optional-fields">
             <legend><span data-i18n="additional">Қосымша</span><span class="optional-label" data-i18n="optional">міндетті емес</span></legend>
             <div class="field-row">
-              <div class="field"><label for="hours" data-i18n="hours">Ұзақтығы, сағат</label><input id="hours" name="hours" type="number" min="0" step="any" data-i18n-placeholder="hoursPlaceholder" placeholder="Мысалы, 5" aria-describedby="hours-error"><p class="field-error" id="hours-error" hidden></p></div>
+              <div class="field"><label for="hours" data-i18n="hours">Ұзақтығы, сағат</label><input id="hours" name="duration_hours" type="number" min="1" step="1" data-i18n-placeholder="hoursPlaceholder" placeholder="Мысалы, 5" aria-describedby="hours-error"><p class="field-error" id="hours-error" hidden></p></div>
               <div class="field"><label for="language" data-i18n="language">Қызмет көрсету тілі</label><select id="language" name="language" aria-describedby="language-error"><option value="">Кез келген</option></select><p class="field-error" id="language-error" hidden></p></div>
             </div>
           </fieldset>
+          <p id="request-error" class="request-error" role="alert" hidden></p>
           <button class="submit" type="submit"><span data-i18n="submit">Мердігерлерді іріктеу</span><svg class="line-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
         </form>
         <p class="form-note" data-i18n="formNote">Тек ұсыныстар. Брондау және өтінім жіберу қарастырылмаған.</p>
@@ -79,17 +80,16 @@
           <div class="result-summary" id="result-summary" role="status" aria-live="polite" tabindex="-1"></div>
           <p class="query-line" id="query-line"></p>
           <div id="result-cards" class="result-cards"></div>
-          <details class="audit" id="audit"><summary data-i18n="auditTitle">Басқалары неге сәйкес келмеді</summary><ul id="excluded-list"></ul></details>
+          <section class="explanation-limitations" id="explanation-limitations" hidden><h3 data-i18n="limitationsTitle">Түсіндірменің шектеулері</h3><ul id="limitations-list"></ul></section>
         </div>
         <section class="technical-error" id="technical-error" role="alert" aria-labelledby="technical-title" tabindex="-1" hidden>
           <div class="state-heading"><span class="state-icon" aria-hidden="true">!</span><h3 id="technical-title" data-i18n="technicalTitle">Техникалық ақау</h3></div>
-          <p data-i18n="technicalText">Іріктеуді орындау мүмкін болмады. Енгізілген параметрлер сақталды. Қайта көріңіз.</p>
+          <p id="technical-text" data-i18n="technicalText">Іріктеуді орындау мүмкін болмады. Енгізілген параметрлер сақталды. Қайта көріңіз.</p>
           <button type="button" class="retry-button" id="retry" data-i18n="retry">Қайта көру</button>
         </section>
-        <div class="demo-controls"><span data-i18n="tryDemo">Мысалдар:</span><button type="button" data-demo="dense" data-i18n="demoDense">Жүргізушілер</button><button type="button" data-demo="rare" data-i18n="demoRare">Флористер</button><button type="button" data-demo="empty" data-i18n="demoEmpty">Сәйкес келмейді</button></div>
       </section>
     </div>
-    <details class="method" id="how-it-works"><summary data-i18n="methodTitle">Іріктеу қалай жұмыс істейді</summary><p data-i18n="methodText">Алдымен қала мен санатты тексереміз. Содан кейін таңдалған күні бос емес немесе бюджет, формат, тіл және ұзақтық шарттарына сәйкес келмейтін мамандарды алып тастаймыз. Қалғандарының ішінен бастапқы бағасы төмен үш профильге дейін көрсетеміз. Баға бірдей болса, реттілік профиль идентификаторымен анықталады. Түсіндірмелер профиль деректері мен сипаттамасына негізделген.</p></details>
+    <details class="method" id="how-it-works"><summary data-i18n="methodTitle">Іріктеу қалай жұмыс істейді</summary><p data-i18n="methodText">Қала, санат және күнтізбе каталогтан жүктеледі. Сервис күнге, бюджетке, форматқа, тілге және ұзақтыққа сай келетін мердігерлерді тексеріп, үш нұсқаға дейін қайтарады. Карточкалар мен түсіндірмелер сервистен алынған ретпен көрсетіледі. Бастапқы баға түпкілікті келісілген құн емес.</p></details>
   </main>
   <footer><span>birge</span><span data-i18n="footer">Анонимдендірілген каталог · 2026</span></footer>
   <noscript>Мердігерлерді іріктеу үшін браузерде JavaScript қосыңыз.</noscript>

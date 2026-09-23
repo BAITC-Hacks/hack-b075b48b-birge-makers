@@ -1,0 +1,6 @@
+node_modules/
+.tools/
+.qa-*/
+.env
+.env.local
+*.log

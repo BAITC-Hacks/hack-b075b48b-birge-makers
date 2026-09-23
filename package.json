@@ -1,0 +1,15 @@
+{
+  "name": "birge-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Birge Explain interface and same-origin API proxy",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node start-server.mjs",
+    "start": "node start-server.mjs",
+    "test": "node --test test/api.test.mjs test/server.test.mjs",
+    "test:browser": "node test/browser.integration.mjs"
+  }
+}

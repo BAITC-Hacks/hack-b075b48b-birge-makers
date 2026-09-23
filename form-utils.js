@@ -1,43 +1,35 @@
-/* Input parsing and field validation, independent of the DOM. */
-(function (root) {
+/* Form values follow the HTTP contract. Options and dates are supplied by the backend. */
+(function(root){
   'use strict';
-  const cities = ['Алматы', 'Астана', 'Зарубежье'];
-  const events = ['свадьба', 'той', 'корпоратив', 'конференция', 'юбилей', 'день рождения'];
-  const languages = ['казахский', 'русский', 'английский'];
-  function budgetDigits(value) {
-    const text = String(value).trim().replace(/\s*₸$/, '').trim();
-    if (/^[0-9\s]+$/.test(text)) return text.replace(/\s/g, '');
-    // Also accept a pasted English grouped amount, without treating a decimal comma as thousands.
-    if (/^[0-9]{1,3}(?:,[0-9]{3})+$/.test(text)) return text.replace(/,/g, '');
-    return null;
+  if(typeof module!=='undefined'&&module.exports&&!root.BirgeApi) require('./src/api/birge.js');
+  const A=root.BirgeApi;
+  const ids={city:'city',date:'date',event_format:'event',category:'category',budget:'budget',duration_hours:'hours',language:'language'};
+  function parseBudget(value){return A.numericBudget(value);}
+  function formatBudget(value){
+    const text=String(value).trim().replace(/\s*₸$/,'').trim();
+    let digits;
+    if(/^[0-9\s]+$/.test(text)) digits=text.replace(/\s/g,'');
+    else if(/^[0-9]{1,3}(?:,[0-9]{3})+$/.test(text)) digits=text.replace(/,/g,'');
+    else return String(value);
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g,' ');
   }
-  function parseBudget(value) {
-    const digits = budgetDigits(value);
-    if (!digits) return NaN;
-    const number = Number(digits);
-    return Number.isSafeInteger(number) && number > 0 ? number : NaN;
+  function validate(raw,options){
+    const errors={};
+    if(!options) return {errors:{},order:null};
+    if(!options.cities.includes(raw.city)) errors.city='city';
+    if(!raw.date) errors.date='dateRequired';
+    else if(!A.isDate(raw.date)) errors.date='date';
+    else if(raw.date<options.calendar_coverage.start||raw.date>options.calendar_coverage.end) errors.date='dateRange';
+    if(!options.event_formats.includes(raw.event_format)) errors.event_format='event';
+    if(!options.categories.includes(raw.category)) errors.category='category';
+    if(!String(raw.budget??'').trim()) errors.budget='budgetRequired';
+    else if(!Number.isFinite(parseBudget(raw.budget))) errors.budget='budget';
+    const hours=String(raw.duration_hours??'').trim();
+    if(hours&&(!/^\d+$/.test(hours)||!Number.isSafeInteger(Number(hours))||Number(hours)<1)) errors.duration_hours='hours';
+    if(raw.language&&!options.languages.includes(raw.language)) errors.language='language';
+    return {errors,order:Object.keys(errors).length?null:A.orderFromForm(raw)};
   }
-  function formatBudget(value) {
-    const digits = budgetDigits(value);
-    if (!digits) return String(value);
-    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  }
-  function validate(raw, categories) {
-    const errors = {};
-    if (!cities.includes(raw.city)) errors.city = 'city';
-    if (!raw.date) errors.date = 'dateRequired';
-    else if (!/^\d{4}-\d{2}-\d{2}$/.test(raw.date) || !Number.isFinite(Date.parse(raw.date)) || new Date(raw.date).toISOString().slice(0,10) !== raw.date) errors.date = 'date';
-    else if (raw.date < '2026-09-23' || raw.date > '2026-12-31') errors.date = 'dateRange';
-    if (!events.includes(raw.event)) errors.event = 'event';
-    if (!categories.includes(raw.category)) errors.category = 'category';
-    const budget = parseBudget(raw.budget);
-    if (!String(raw.budget).trim()) errors.budget = 'budgetRequired';
-    else if (!Number.isFinite(budget)) errors.budget = 'budget';
-    const hoursText = String(raw.hours).trim();
-    const hours = hoursText === '' ? null : Number(hoursText);
-    if (hours !== null && (!/^(?:\d+(?:[.]\d*)?|[.]\d+)$/.test(hoursText) || !Number.isFinite(hours) || hours <= 0)) errors.hours = 'hours';
-    if (raw.language && !languages.includes(raw.language)) errors.language = 'language';
-    return { errors, query:{city:raw.city,date:raw.date,event:raw.event,category:raw.category,budget,hours,language:raw.language} };
-  }
-  root.BirgeForm = { cities, events, languages, parseBudget, formatBudget, validate };
+  const api={ids,parseBudget,formatBudget,validate};
+  root.BirgeForm=api;
+  if(typeof module!=='undefined'&&module.exports) module.exports=api;
 })(globalThis);
