@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3ec">
+  <meta name="description" content="Birge Explain — Қазақстандағы іс-шараларға мердігерлерді нақты түсіндірмемен іріктеу.">
+  <title>Birge Explain — Іс-шараны бірге жасайық</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#order" data-i18n="skip">Формаға өту</a>
+  <header class="site-header wrap">
+    <a class="brand" href="/" aria-label="Birge Explain — Home"><span class="brand-symbol" aria-hidden="true">✳</span> birge<span class="brand-dot">.</span><span class="brand-sub">EXPLAIN</span></a>
+    <nav class="language-switch" aria-label="Тіл / Язык / Language">
+      <button type="button" data-language="kk" aria-pressed="true" aria-label="Қазақша">ҚАЗ</button>
+      <button type="button" data-language="ru" aria-pressed="false" aria-label="Русский">РУС</button>
+      <button type="button" data-language="en" aria-pressed="false" aria-label="English">ENG</button>
+    </nav>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="tiny-star" aria-hidden="true">✳</span> <span data-i18n="eyebrow">ҚАЗАҚСТАНДАҒЫ ІС-ШАРАЛАР ҮШІН</span></p>
+        <h1 id="hero-title"><span data-i18n="hero1">Керек адамды</span><br><em data-i18n="hero2">бірге табайық.</em></h1>
+        <p class="hero-description" data-i18n="intro">Іс-шараңыз туралы айтыңыз. Біз үшке дейін мердігер ұсынып, әрқайсысы неге сәйкес келетінін түсіндіреміз.</p>
+        <a class="primary hero-cta" href="#order"><span data-i18n="start">Мердігер табу</span><span aria-hidden="true">↗</span></a>
+        <p class="hero-footnote"><span aria-hidden="true">✓</span> <span data-i18n="heroNote">Нақты деректер. Түсінікті таңдау.</span></p>
+      </div>
+      <div class="hero-visual">
+        <img src="/assets/hero-960.svg" srcset="/assets/hero-640.svg 640w, /assets/hero-960.svg 960w, /assets/hero-1536.svg 1536w" sizes="(max-width: 760px) calc(100vw - 32px), (max-width: 1200px) 46vw, 560px" width="1536" height="1344" fetchpriority="high" loading="eager" decoding="async" alt="">
+        <div class="visual-caption"><span class="caption-dot" aria-hidden="true"></span><span data-i18n="visualCaption">Әр іс-шараның өз адамдары бар</span><span aria-hidden="true">↗</span></div>
+      </div>
+    </section>
+    <section class="principles wrap" aria-label="Қалай жұмыс істейді / Как это работает / How it works">
+      <div><span class="step-no">01</span><p><strong data-i18n="step1">Сіздің шарттарыңыз</strong><span data-i18n="step1desc">Қала, күн, формат және бюджет</span></p></div>
+      <div><span class="step-no">02</span><p><strong data-i18n="step2">Деректермен тексеру</strong><span data-i18n="step2desc">Күнтізбе мен талаптарды салыстырамыз</span></p></div>
+      <div><span class="step-no">03</span><p><strong data-i18n="step3">Түсіндірмесі бар ұсыныс</strong><span data-i18n="step3desc">Үшке дейін нақты нұсқа</span></p></div>
+    </section>
+    <section id="order" class="order-section wrap" aria-labelledby="form-title">
+      <div class="section-heading"><div><p class="eyebrow" data-i18n="formEyebrow">ОСЫ ЖЕРДЕН БАСТАЙМЫЗ</p><h2 id="form-title" data-i18n="formTitle">Қандай іс-шара жоспарлап жүрсіз?</h2></div><span class="section-mark" aria-hidden="true">✳</span></div>
+      <p class="section-intro" data-i18n="formIntro">Бес негізгі өрісті толтырыңыз. Тіл мен ұзақтықты қажет болса қосыңыз.</p>
+      <div id="catalog-notice" class="catalog-notice"><p id="catalog-message" role="status" aria-live="polite" data-i18n="catalogLoading">Каталог жүктелуде…</p><button id="reload-catalog" class="text-button" type="button" hidden data-i18n="retry">Қайта көру</button></div>
+      <form id="order-form" novalidate>
+        <fieldset id="order-fields" disabled>
+          <legend class="sr-only" data-i18n="formTitle">Іс-шара параметрлері</legend>
+          <div class="form-grid">
+            <div class="field"><label for="city" data-i18n="city">Қала</label><select id="city" name="city" required aria-describedby="city-error"><option value="">—</option></select><p id="city-error" class="field-error" hidden></p></div>
+            <div class="field"><label for="date" data-i18n="date">Іс-шара күні</label><input id="date" name="date" type="date" required aria-describedby="date-error"><p id="date-error" class="field-error" hidden></p></div>
+            <div class="field"><label for="event_format" data-i18n="format">Іс-шара форматы</label><select id="event_format" name="event_format" required aria-describedby="event_format-error"><option value="">—</option></select><p id="event_format-error" class="field-error" hidden></p></div>
+            <div class="field"><label for="category" data-i18n="category">Кім қажет?</label><select id="category" name="category" required aria-describedby="category-error"><option value="">—</option></select><p id="category-error" class="field-error" hidden></p></div>
+            <div class="field"><label for="budget" data-i18n="budget">Бюджет, ₸</label><input id="budget" name="budget" type="number" min="0" step="1" inputmode="numeric" placeholder="1500000" required aria-describedby="budget-error budget-help"><p id="budget-error" class="field-error" hidden></p><small id="budget-help" data-i18n="budgetHelp">Каталогтағы бастапқы бағамен салыстырылады</small></div>
+            <div class="field optional-field"><label for="duration_hours"><span data-i18n="duration">Ұзақтық, сағат</span><small data-i18n="optional">міндетті емес</small></label><input id="duration_hours" name="duration_hours" type="number" min="1" step="1" inputmode="numeric" placeholder="4" aria-describedby="duration_hours-error"><p id="duration_hours-error" class="field-error" hidden></p></div>
+            <div class="field optional-field"><label for="language"><span data-i18n="language">Мердігердің тілі</span><small data-i18n="optional">міндетті емес</small></label><select id="language" name="language"><option value="">—</option></select></div>
+          </div>
+          <div class="form-bottom"><p data-i18n="formNote">Бұл тек ұсыныс. Ешкімге өтінім жіберілмейді.</p><button id="submit-order" class="primary" type="submit"><span id="submit-label" data-i18n="submit">Ұсыныстарды көру</span><span id="submit-icon" aria-hidden="true">↗</span></button></div>
+        </fieldset>
+      </form>
+    </section>
+    <section id="results" class="results-section wrap" aria-labelledby="results-title" aria-busy="false">
+      <div class="results-heading"><h2 id="results-title" tabindex="-1" data-i18n="resultsTitle">Сіздің ұсыныстарыңыз</h2><span id="result-count" class="pill" hidden></span></div>
+      <p id="result-live" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div id="result-message" class="result-message"><span class="message-icon" aria-hidden="true">↗</span><h3 id="state-title" data-i18n="idleTitle">Алғашқы қадам — сізден</h3><p id="state-description" data-i18n="idleDescription">Форманы толтырған соң, осы жерде ұсыныстар мен олардың себептері пайда болады.</p><p id="technical-detail" lang="ru" hidden></p><button id="retry-order" type="button" class="secondary" hidden data-i18n="retry">Қайта көру</button></div>
+      <p id="source-note" class="source-note" hidden data-i18n="sourceNote">Каталогтың түсіндірмелері орыс тілінде, өзгеріссіз көрсетіледі.</p>
+      <p id="meta-explanation" class="meta-explanation" lang="ru" hidden></p>
+      <div id="cards" class="cards"></div>
+      <ul id="limitations" class="limitations" lang="ru" hidden></ul>
+    </section>
+    <section class="trust-section wrap" aria-labelledby="trust-title"><span class="trust-icon" aria-hidden="true">✳</span><div><h2 id="trust-title" data-i18n="trustTitle">Таңдау — түсінікті болғанда.</h2><p data-i18n="trustText">AI сипаттамадан нақты деректі таңдайды. Ал сервис күнді, бюджетті және шарттарды тексереді. Дерек жеткіліксіз болса, оны ашық айтамыз.</p></div><a href="#order" class="text-link" data-i18n="backToForm">Формаға оралу ↑</a></section>
+  </main>
+  <footer class="wrap footer"><span class="footer-brand">birge. <small>EXPLAIN</small></span><p data-i18n="footer">Қазақстанда, іс-шараларды бірге жасау үшін.</p><span data-i18n="prototype">Хакатон прототипі · 2026</span></footer>
+  <noscript><p>Бұл сайтқа JavaScript қажет. Для работы формы включите JavaScript. Enable JavaScript to use the form.</p></noscript>
+</body>
+</html>

@@ -4,3 +4,5 @@ data/ai-index.json
 data/ai-index.json.checkpoint.json
 *.tmp
 coverage/
+test-results/
+playwright-report/

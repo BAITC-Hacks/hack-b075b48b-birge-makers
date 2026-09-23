@@ -3,12 +3,14 @@ import { pathToFileURL } from 'node:url';
 import { recommend, explainPassed, parseEnvelope, wrap } from './engine.js';
 import { ValidationError, request } from './validation.js';
 import { loadCatalog, loadIndex, checkCoverage, indexCoverage } from './storage.js';
+import { serveStatic } from './static.js';
 
 export function createApp(dataset, index = null) {
   const aiStatus = indexCoverage(dataset.contractors, index);
   return createServer(async (req, res) => {
     const send = (status, data) => { if (res.destroyed || res.writableEnded) return; res.writeHead(status, { 'Content-Type': 'application/xml; charset=utf-8', 'X-Content-Type-Options': 'nosniff' }); res.end(wrap(data)); };
     try {
+      if (await serveStatic(req, res)) return;
       if (req.method === 'GET' && req.url === '/health') return send(200, { status: 'ok', contractor_count: dataset.contractors.length, calendar_coverage: dataset.calendar_coverage, ai_index_loaded: !!index, ai: aiStatus });
       if (req.method === 'GET' && req.url === '/catalog/options') return send(200, {
         cities: [...new Set(dataset.contractors.map(c => c.city))].sort(),
